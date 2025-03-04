@@ -2,6 +2,9 @@ export default {
   async scheduled(event, env, ctx) {
     await checkOperatorStatus(env);
   },
+  async fetch(request, env) {
+    return new Response("Worker is running!");
+  },
 };
 
 async function checkOperatorStatus(env) {
@@ -32,9 +35,15 @@ async function checkOperatorStatus(env) {
   });
 
   if (statusChanges.length > 0) {
-    await sendTelegramAlert(TELEGRAM_BOT_TOKEN, CHAT_ID, statusChanges);
+    const message = statusChanges.map(change => 
+      `🚨 Operator Status Change 🚨\n` +
+      `Operator: ${change.name} (ID: ${change.id})\n` +
+      `Old Status: ${change.oldStatus}\n` +
+      `New Status: ${change.newStatus}`
+    ).join("\n\n");
+    await sendTelegramAlert(TELEGRAM_BOT_TOKEN, CHAT_ID, message);
   }
-
+  await sendTelegramAlert(TELEGRAM_BOT_TOKEN, CHAT_ID, JSON.stringify(currentOperatorStatuses));
   await env.SSV_STATE.put("lastOperatorStatuses", JSON.stringify(currentOperatorStatuses));
 }
 
@@ -56,13 +65,8 @@ async function fetchValidatorInfo(publicKey) {
   }
 }
 
-async function sendTelegramAlert(token, chatId, changes) {
-  const message = changes.map(change => 
-    `🚨 Operator Status Change 🚨\n` +
-    `Operator: ${change.name} (ID: ${change.id})\n` +
-    `Old Status: ${change.oldStatus}\n` +
-    `New Status: ${change.newStatus}`
-  ).join("\n\n");
+async function sendTelegramAlert(token, chatId, message) {
+
 
   const url = `https://api.telegram.org/bot${token}/sendMessage`;
   const body = JSON.stringify({ chat_id: chatId, text: message });
