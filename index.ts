@@ -43,7 +43,7 @@ async function checkOperatorStatus(env) {
     ).join("\n\n");
     await sendTelegramAlert(TELEGRAM_BOT_TOKEN, CHAT_ID, message);
   }
-  await sendTelegramAlert(TELEGRAM_BOT_TOKEN, CHAT_ID, JSON.stringify(currentOperatorStatuses));
+  //await sendTelegramAlert(TELEGRAM_BOT_TOKEN, CHAT_ID, JSON.stringify(currentOperatorStatuses));
   await env.SSV_STATE.put("lastOperatorStatuses", JSON.stringify(currentOperatorStatuses));
 }
 
