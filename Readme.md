@@ -1,6 +1,11 @@
-## SSV Cluster Alert for downtime using cloudflare workers
+## SSV Cluster Alert 
 
-https://dash.cloudflare.com/531ee3833b68abfdbb03c0129911ae03/workers-and-pages
+Monitor your cluster for downtime using cloudflare workers
+
+[SSV Stake Cluster](https://docs.ssv.network/stakers/clusters/)
+[Cloudflare Workers](https://workers.cloudflare.com/)
+
+Alerts your cluster when a change in active status for a cluster member.
 
 # Free :-) 
 
