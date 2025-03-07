@@ -29,7 +29,7 @@ async function checkOperatorStatus(env) {
         id: operator.id,
         name: operator.name,
         oldStatus: lastState[operator.id],
-        newStatus: operator.status
+        newStatus: formatStatus(operator.status)
       });
     }
   });
@@ -76,4 +76,8 @@ async function sendTelegramAlert(token, chatId, message) {
   } catch (error) {
     console.error("Error sending Telegram alert:", error);
   }
+}
+
+function formatStatus(status) {
+  return status === "Active" ? `Active ✅` : `Inactive ❌`;
 }
